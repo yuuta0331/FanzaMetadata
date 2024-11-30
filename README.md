@@ -9,12 +9,14 @@
   <p align="center">
     A Playnite metadata plugin that fetches comprehensive game metadata directly from <a href="https://www.dmm.co.jp">FANZA</a>, supporting both general (PC Games) and Doujin works!
   </p>
+<br><br>
 
   <p align="center">
     <a href="https://github.com/yuuta0331/FanzaMetadata/releases/latest"><img src="https://img.shields.io/github/v/release/yuuta0331/FanzaMetadata" alt="Release"></a>
     <img src="https://img.shields.io/github/languages/top/yuuta0331/FanzaMetadata" alt="Language">
     <a href="https://github.com/yuuta0331/FanzaMetadata/blob/master/LICENSE"><img src="https://img.shields.io/github/license/yuuta0331/FanzaMetadata" alt="License"></a>
     <img src="https://img.shields.io/github/stars/yuuta0331/FanzaMetadata?style=social" alt="Stars">
+    <br><br>
     <img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/yuuta0331/FanzaMetadata/total">
     <a href="https://www.dmm.co.jp"><img src="https://img.shields.io/badge/Fanza-fa2c40" alt="Fanza"></a>
     <a href="https://www.dmm.co.jp/dc/doujin/"><img src="https://img.shields.io/badge/Fanza同人-ff8687" alt="Fanza同人"></a>
