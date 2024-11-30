@@ -1,0 +1,10 @@
+﻿Id: FanzaMetadata
+Name: Fanza Metadata
+Author: yuuta0331
+Version: 1.0
+Module: FanzaMetadata.dll
+Type: MetadataProvider
+Icon: Resources\Logo.png
+Links:
+  - Name: GitHub
+    Url: https://github.com/yuuta0331/FanzaMetadataScrapper
