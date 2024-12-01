@@ -1,7 +1,7 @@
-﻿Id: FanzaMetadata_yuta0331
+﻿Id: FanzaMetadata_db03c8d9-645a-4359-aafb-01cda945f301
 Name: Fanza Metadata
 Author: yuuta0331
-Version: 1.0.2
+Version: 1.0.3
 Module: FanzaMetadata.dll
 Type: MetadataProvider
 Icon: Resources\Logo.png
