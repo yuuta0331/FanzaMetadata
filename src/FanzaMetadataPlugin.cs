@@ -24,7 +24,7 @@ public class FanzaMetadataPlugin : MetadataPlugin
 
     private FanzaMetadataSettingsViewModel Settings { get; }
 
-    public override Guid Id { get; } = Guid.Parse("db03c8d9-645a-4359-aafb-01cda945f301");
+    public override Guid Id { get; } = Guid.Parse("7ed11394-1d65-432f-b9dc-1f2cbd9f91bb");
 
     public override List<MetadataField> SupportedFields { get; } =
     [

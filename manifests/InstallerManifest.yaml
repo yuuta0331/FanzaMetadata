@@ -1,8 +1,8 @@
-﻿AddonId: FanzaMetadata_yuta0331
+﻿AddonId: FanzaMetadata_db03c8d9-645a-4359-aafb-01cda945f301
 Packages:
-  - Version: 1.0.1
+  - Version: 1.0.2
     RequiredApiVersion: 6.11.0
-    ReleaseDate: 2024-11-30
+    ReleaseDate: 2024-12-01
     PackageUrl: https://github.com/yuuta0331/FanzaMetadata/releases/latest/download/FanzaMetadata.pext
     Changelog:
       - Update extension logo
