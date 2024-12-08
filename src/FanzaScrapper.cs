@@ -31,6 +31,34 @@ namespace FanzaMetadata
 
             try
             {
+                if (searchCategory == "ALL")
+                {
+                    var generalCategoryResults = await ScrapSearchPageForCategory("PC Games", query, maxSearchResults, language);
+                    var doujinCategoryResults = await ScrapSearchPageForCategory("Doujin Games", query, maxSearchResults, language);
+
+                    var combinedResults = InterleaveResults(generalCategoryResults, doujinCategoryResults, maxSearchResults);
+
+                    return combinedResults;
+                }
+
+                return await ScrapSearchPageForCategory(searchCategory, query, maxSearchResults, language);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error(ex, $"Error scraping search page: {searchUrl}");
+                return new List<FanzaSearchResult>();
+            }
+        }
+
+        private async Task<List<FanzaSearchResult>> ScrapSearchPageForCategory(string searchCategory, string query, int maxSearchResults, SupportedLanguages language)
+        {
+            var baseUrl = FanzaMetadataSettings.GetSearchCategoryBaseUrl(searchCategory);
+            var searchPath = FanzaMetadataSettings.GetSearchPath(searchCategory);
+            var parameters = FanzaMetadataSettings.GetDefaultParameters(searchCategory);
+            var searchUrl = $"{baseUrl}{searchPath}{Uri.EscapeDataString(query)}{parameters}";
+
+            try
+            {
                 var document = await FetchDocumentAsync(searchUrl);
                 if (document == null) return new List<FanzaSearchResult>();
 
@@ -44,7 +72,36 @@ namespace FanzaMetadata
             }
         }
 
-        private List<FanzaSearchResult> ExtractSearchResults(string baseUrl, IDocument document, bool isDoujinCategory, int maxResults)
+        private List<FanzaSearchResult> InterleaveResults(List<FanzaSearchResult> generalResults, List<FanzaSearchResult> doujinResults, int maxResults)
+        {
+            var combinedResults = new List<FanzaSearchResult>();
+
+            int generalIndex = 0, doujinIndex = 0;
+            while (combinedResults.Count < maxResults)
+            {
+                if (generalIndex < generalResults.Count)
+                {
+                    combinedResults.Add(generalResults[generalIndex]);
+                    generalIndex++;
+                }
+
+                if (doujinIndex < doujinResults.Count)
+                {
+                    combinedResults.Add(doujinResults[doujinIndex]);
+                    doujinIndex++;
+                }
+
+                if (generalIndex >= generalResults.Count && doujinIndex >= doujinResults.Count)
+                {
+                    break;
+                }
+            }
+
+            return combinedResults;
+        }
+
+        private List<FanzaSearchResult> ExtractSearchResults(string baseUrl, IDocument document, bool isDoujinCategory,
+            int maxResults)
         {
             var resultSelector = isDoujinCategory ? "li.productList__item" : "li.component-legacy-productTile__item";
             var rows = document.QuerySelectorAll(resultSelector);
@@ -52,57 +109,55 @@ namespace FanzaMetadata
             var results = new List<FanzaSearchResult>();
             foreach (var row in rows)
             {
-                // タイトルとリンクを取得
-                var titleElement = row.QuerySelector(isDoujinCategory ? ".tileListTtl__txt a" : "span.component-legacy-productTile__title");
-                var linkElement = row.QuerySelector(isDoujinCategory ? ".tileListTtl__txt a" : "a.component-legacy-productTile__detailLink");
+                var titleElement = row.QuerySelector(isDoujinCategory
+                    ? ".tileListTtl__txt a"
+                    : "span.component-legacy-productTile__title");
+                var linkElement = row.QuerySelector(isDoujinCategory
+                    ? ".tileListTtl__txt a"
+                    : "a.component-legacy-productTile__detailLink");
 
                 var title = titleElement?.TextContent.Trim();
                 var link = linkElement?.GetAttribute("href");
 
-                // ベースURLで完全なリンクを補完
                 if (!string.IsNullOrEmpty(link) && !link.StartsWith("http"))
                 {
                     link = $"{baseUrl.TrimEnd('/')}/{link.TrimStart('/')}";
                 }
 
-                // 著者とイラストレーターを取得
                 var authorElement = row.QuerySelector(isDoujinCategory
                     ? "div.tileListTtl__txt--author a"
                     : "div.component-legacy-productTile__relatedInfo a[href*='/list/article=maker']");
 
                 var illustratorElement = row.QuerySelector(isDoujinCategory
-                    ? "div.tileListTtl__txt a"
+                    ? ""
                     : "div.component-legacy-productTile__relatedInfo a[href*='/list/article=author']");
 
                 var author = authorElement?.TextContent.Trim();
                 var illustrator = illustratorElement?.TextContent.Trim();
 
-                // 不足データをスキップ
                 if (string.IsNullOrEmpty(title) || string.IsNullOrEmpty(link))
                 {
                     _logger.Warn("Skipped an item due to missing title or link.");
                     continue;
                 }
 
-                // 結果リストに追加
                 results.Add(new FanzaSearchResult
                 {
                     Title = title,
                     Link = link,
-                    Excerpt = $"{(string.IsNullOrEmpty(illustrator) ? "Unknown Illustrator" : illustrator)}\n{(string.IsNullOrEmpty(author) ? "Unknown Brand" : author)}"
+                    Excerpt =
+                        $"{(string.IsNullOrEmpty(illustrator) ? "" : illustrator)}\n{(string.IsNullOrEmpty(author) ? "Unknown Brand" : author)}"
                 });
 
-                // 最大件数に達したら終了
                 if (results.Count >= maxResults) break;
             }
 
             return results;
         }
 
-
         public async Task<FanzaScrapperResult> ScrapGamePage(string url, FanzaMetadataSettings settings)
         {
-            string searchCategory = settings.SearchCategory;
+            string searchCategory = FanzaMetadataSettings.DetermineCategoryFromUrl(url);
             SupportedLanguages language = settings.GetSupportedLanguage();
 
             if (!IsValidUrl(url))
@@ -234,7 +289,6 @@ namespace FanzaMetadata
 
                     if (headlineText.Contains("作品情報"))
                     {
-
                         var iframe = section.QuerySelector("iframe#if_view");
                         if (iframe == null)
                         {

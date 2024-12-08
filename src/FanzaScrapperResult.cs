@@ -33,10 +33,3 @@ public class FanzaScrapperResult
     [CanBeNull] public string UpdateDate { get; set; }
     [CanBeNull] public List<string> VoiceActors { get; set; }
 }
-
-public class FanzaSearchResult
-{
-    public string Title { get; set; }
-    public string Link { get; set; }
-    public string Excerpt { get; set; }
-}

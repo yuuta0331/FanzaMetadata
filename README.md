@@ -53,18 +53,18 @@ FanzaMetadata introduces tailored support for FANZA while expanding its feature 
 
 FanzaMetadata supports the following [fields](https://api.playnite.link/docs/api/Playnite.SDK.Plugins.MetadataField.html):
 
-- Age rating
-- Background Image
-- Community Score
+- Name
+- Icon
 - Cover Image
+- Background Image
+- Release Date
 - Description
+- Age rating
+- Links
+- Community Score
 - Developers
 - Genres
-- Icon
-- Links
-- Name
 - Publishers
-- Release Date
 - Series
 
 ### Fetching Metadata for Both General and Doujin Works
@@ -87,7 +87,7 @@ To configure the plugin, navigate to the plugin settings in Playnite. Below are 
 
 | **Name**             | **Default Value** | **Description**                                                             |
 |-----------------------|-------------------|-----------------------------------------------------------------------------|
-| Game Category         | Doujin Games      | Choose whether to fetch metadata for general (PC Games) or doujin (Doujin Games). |
+| Game Category         | ALL               | Choose whether to fetch metadata for general (PC Games), doujin (Doujin Games), or both categories (ALL). |
 | Page Language         | Japanese          | While other languages can be selected, the plugin may not work reliably with non-Japanese settings. |
 | Max Search Results    | 30                | Maximum number of search results that should appear.                        |
 

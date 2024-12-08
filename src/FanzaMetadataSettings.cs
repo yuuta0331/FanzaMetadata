@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Playnite.SDK;
 using Playnite.SDK.Data;
 
@@ -8,11 +9,12 @@ public class FanzaMetadataSettings : ObservableObject
 {
     private int _maxSearchResults = 30;
     private string _pageLanguage = "Japanese";
-    private string _searchCategory = "Doujin Games";
+    private string _searchCategory = "ALL";
 
     [DontSerialize]
     public List<string> AvailableSearchCategory { get; } =
     [
+        "ALL",
         "PC Games",
         "Doujin Games"
     ];
@@ -94,6 +96,21 @@ public class FanzaMetadataSettings : ObservableObject
     public string GetCurrentBaseUrl()
     {
         return GetSearchCategoryBaseUrl(SearchCategory);
+    }
+
+    public static string DetermineCategoryFromUrl(string url)
+    {
+        if (url.Contains("dlsoft.dmm.co.jp"))
+        {
+            return "PC Games";
+        }
+
+        if (url.Contains("www.dmm.co.jp"))
+        {
+            return "Doujin Games";
+        }
+
+        return "Unknown";
     }
 
     private Dictionary<string, string> _customParameters = new();

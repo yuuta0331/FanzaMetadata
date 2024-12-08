@@ -241,7 +241,6 @@ public class FanzaMetadataProvider(
 
                     if (searchResult.Count == 0)
                     {
-                        Logger.Info($"No search results found for {options.GameData.Name}");
                         return null;
                     }
 
