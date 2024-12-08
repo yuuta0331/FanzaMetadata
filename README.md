@@ -12,6 +12,7 @@
 <br><br>
 
   <p align="center">
+    <a href="https://www.codefactor.io/repository/github/yuuta0331/FanzaMetadata"><img src="https://www.codefactor.io/repository/github/yuuta0331/FanzaMetadata/badge" alt="CodeFactor"></a>
     <a href="https://github.com/yuuta0331/FanzaMetadata/releases/latest"><img src="https://img.shields.io/github/v/release/yuuta0331/FanzaMetadata" alt="Release"></a>
     <img src="https://img.shields.io/github/languages/top/yuuta0331/FanzaMetadata" alt="Language">
     <a href="https://github.com/yuuta0331/FanzaMetadata/blob/master/LICENSE"><img src="https://img.shields.io/github/license/yuuta0331/FanzaMetadata" alt="License"></a>

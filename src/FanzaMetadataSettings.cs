@@ -91,6 +91,11 @@ public class FanzaMetadataSettings : ObservableObject
         { "Doujin Games", "/n1=AgReSwMKX1VZCFQCloTHi8SF/" }
     };
 
+    public string GetCurrentBaseUrl()
+    {
+        return GetSearchCategoryBaseUrl(SearchCategory);
+    }
+
     private Dictionary<string, string> _customParameters = new();
 
     public static string GetDefaultParameters(string searchCategory)

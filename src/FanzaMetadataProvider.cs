@@ -236,14 +236,12 @@ public class FanzaMetadataProvider(
                             var baseUrl = FanzaMetadataSettings.GetSearchCategoryBaseUrl(settings.SearchCategory);
                             var source = game.Link.Replace(FanzaMetadataSettings.GetSearchCategoryBaseUrl(baseUrl), "").Split('/');
                             var addExcerpt = source.Length > 0 ? source[0] : "Unknown source";
-
-                            game.Excerpt += $"\n(From {addExcerpt})";
                             searchResult.Add(game);
                         });
 
                     if (searchResult.Count == 0)
                     {
-                        Logger.Error($"No search results found for {options.GameData.Name}");
+                        Logger.Info($"No search results found for {options.GameData.Name}");
                         return null;
                     }
 
@@ -268,7 +266,7 @@ public class FanzaMetadataProvider(
 
         try
         {
-            var gameTask = scrapper.ScrapGamePage(fanzaLink, settings.SearchCategory, settings.GetSupportedLanguage());
+            var gameTask = scrapper.ScrapGamePage(fanzaLink, settings);
             gameTask.Wait();
 
             _gameData = gameTask.Result;
